@@ -8,5 +8,5 @@ export default defineEventHandler(async (event) => {
     .from("users")
     .select("*", { count: "exact" })
     .range(from, to);
-  return { videos: data, total: count };
+  return { users: data, total: count };
 });

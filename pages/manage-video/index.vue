@@ -13,21 +13,33 @@ const currentPage = computed(() => parseInt(route.query?.page ?? 1, 10));
 
 const { from, to } = usePagination(currentPage, LIMIT);
 
-const { data, pending, error, refresh } = await useAsyncData("videos", () =>
-  $fetch("/api/videos", {
-    headers: useRequestHeaders(["cookie"]),
-    params: {
-      from: from.value,
-      to: to.value,
+const { data, pending, error, refresh } = await useAsyncData(
+  "videos",
+  () =>
+    $fetch("/api/videos", {
+      headers: useRequestHeaders(["cookie"]),
+      params: {
+        from: from.value,
+        to: to.value,
+      },
+    }),
+  {
+    immediate: false,
+    transform: (data) => {
+      const converted = data?.videos.map((item) => ({
+        ...item,
+        createdAt: useDateFormat(item.created_at, 'YYYY-MM-DD HH:mm:ss'),
+      }));
+      return { videos: converted, total: data.total };
     },
-  })
+  }
 );
 
 onMounted(refresh);
 
 watch(from, refresh);
 
-const totalPage = computed(() => Math.round(data.value?.total / LIMIT));
+const totalPage = computed(() => Math.round((data.value?.total ?? 1) / LIMIT));
 </script>
 <template>
   <div class="my-10">
@@ -39,11 +51,12 @@ const totalPage = computed(() => Math.round(data.value?.total / LIMIT));
     <div v-if="error">{{ error }}</div>
     <ul class="space-y-3">
       <li
-        v-for="item in data.videos"
+        v-for="item in data?.videos"
         :key="item.id"
         class="flex space-x-4 p-5 bg-white rounded-md shadow-sm"
       >
         <div class="flex-1">{{ item.title }}</div>
+        <div class="flex-1">{{ item.createdAt }}</div>
         <NuxtLink :to="`/manage-video/edit-${item.id}`">Edit</NuxtLink>
         <a href="#">Delete</a>
       </li>
