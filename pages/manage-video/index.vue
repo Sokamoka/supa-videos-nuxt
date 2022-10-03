@@ -37,8 +37,6 @@ const totalPage = computed(() => Math.round(data.value?.total / LIMIT));
       <NuxtLink to="/manage-video/add" class="button is-primary">New</NuxtLink>
     </div>
     <div v-if="error">{{ error }}</div>
-    {{ currentPage }}
-    From: {{ from }} To: {{ to }}
     <ul class="space-y-3">
       <li
         v-for="item in data.videos"
@@ -51,7 +49,7 @@ const totalPage = computed(() => Math.round(data.value?.total / LIMIT));
       </li>
     </ul>
 
-    <div class="flex space-x-2">
+    <div class="flex space-x-3 my-5">
       <nuxt-link
         v-for="i in totalPage"
         :key="i"
@@ -61,7 +59,10 @@ const totalPage = computed(() => Math.round(data.value?.total / LIMIT));
             page: i,
           },
         }"
-        :class="{ 'text-blue-500': i === currentPage }"
+        :class="[
+          'px-4 py-2 font-bold text-slate-500 bg-slate-200 rounded-full',
+          { 'text-blue-500': i === currentPage },
+        ]"
       >
         {{ i }}
       </nuxt-link>
