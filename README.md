@@ -1,5 +1,7 @@
-# Supa Videos nuxt
+# Supa Videos Nuxt
 ## Nuxt 3 + Supabase + Tailwindcss
+
+Auth and Database(SQL) - Supabase
 
 ## Setup
 
