@@ -7,13 +7,14 @@ definePageMeta({
   middleware: ["auth"],
   key: "manage-video",
   pageTransition: { name: "slide-fade", mode: "out-in" },
+  keepalive: false,
 });
 
 const currentPage = computed(() => parseInt(route.query?.page ?? 1, 10));
 
-const { from, to } = usePagination(currentPage, LIMIT);
+const { from, to } = usePagination(currentPage, LIMIT, 'videos');
 
-const { data, pending, error, refresh } = await useAsyncData(
+const { data, pending, error } = await useAsyncData(
   "videos",
   () =>
     $fetch("/api/videos", {
@@ -34,10 +35,6 @@ const { data, pending, error, refresh } = await useAsyncData(
     },
   }
 );
-
-onMounted(refresh);
-
-watch(from, refresh);
 
 const totalPage = computed(() => Math.round((data.value?.total ?? 1) / LIMIT));
 </script>
