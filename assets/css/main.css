@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .button {
+    @apply bg-slate-50 px-4 py-2 rounded-lg;
+  }
+  .button.is-primary {
+    @apply bg-blue-500 text-white;
+  }
+}
+
+@layer components {
+  .input {
+    @apply border border-slate-300 px-3 py-2 rounded-lg;
+  }
+}
+
+.field {
+  @apply flex flex-col;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  @apply bg-slate-100;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(10px);
+  opacity: 0;
+}
